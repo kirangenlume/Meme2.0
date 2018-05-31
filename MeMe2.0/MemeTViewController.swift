@@ -25,6 +25,7 @@ class MemeTViewController: UIViewController, UITableViewDelegate, UITableViewDat
         super.viewWillAppear(animated)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         memes = appDelegate.memes
+        tableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -35,6 +36,9 @@ class MemeTViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let cell = tableView.dequeueReusableCell(withIdentifier: "MemeCellView")
         let titleText = memes[indexPath.row].topText + " " + memes[indexPath.row].bottomText
         cell?.textLabel?.text = titleText
+        
+        let cellImage = memes[indexPath.row].memedImage
+        cell?.imageView?.image = cellImage
         return cell!
     }
 

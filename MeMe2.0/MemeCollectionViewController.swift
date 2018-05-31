@@ -21,6 +21,7 @@ class MemeCollectionViewController: UICollectionViewController {
         super.viewWillAppear(animated)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         memes = appDelegate.memes
+        self.collectionView?.reloadData()
     }
     
     // MARK: - Collection view data source

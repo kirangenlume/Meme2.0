@@ -48,6 +48,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     
     func save(){
         let meme = MemeObject(topText: topTextField.text!, bottomText: bottopTextField.text!, originalImage: selectedImage.image!, memedImage: generateMemedImage())
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.memes.append(meme)
     }
     
     func hideTopAndBottomBars(_ hide: Bool) {
@@ -67,6 +69,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     }
     
     @IBAction func cancelSavedImage(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func exportImage(_ sender: Any) {
