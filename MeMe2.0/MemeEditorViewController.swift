@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MemeEditorViewController.swift
 //  MeMe2.0
 //
 //  Created by kirang on 5/29/18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate,  UINavigationControllerDelegate {
+class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate,  UINavigationControllerDelegate {
     @IBOutlet weak var selectedImage: UIImageView!
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottopTextField: UITextField!
@@ -75,18 +75,18 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     @IBAction func exportImage(_ sender: Any) {
         let savedMeme: UIImage = generateMemedImage()
         
-        let activityViewController: UIActivityViewController = UIActivityViewController(activityItems: [savedMeme], applicationActivities: nil)
-        self.present(activityViewController, animated: true, completion: nil)
+        let activityMemeEditorViewController: UIActivityViewController = UIActivityViewController(activityItems: [savedMeme], applicationActivities: nil)
+        self.present(activityMemeEditorViewController, animated: true, completion: nil)
         
-        activityViewController.completionWithItemsHandler = { (activityType: UIActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) -> Void in
+        activityMemeEditorViewController.completionWithItemsHandler = { (activityType: UIActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) -> Void in
             if completed {
                 self.save()
                 print("save successfully")
-                activityViewController.dismiss(animated: true, completion: nil)
+                activityMemeEditorViewController.dismiss(animated: true, completion: nil)
                 self.dismiss(animated: true, completion: nil)
             }
         }
-        self.present(activityViewController, animated: true, completion: nil)
+        self.present(activityMemeEditorViewController, animated: true, completion: nil)
     }
     
     //MARK:  barbutton methods
@@ -99,10 +99,10 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     }
     
     func presentImagePickerWith(sourceType: UIImagePickerControllerSourceType) {
-        let viewController = UIImagePickerController()
-        viewController.delegate = self
-        viewController.sourceType = sourceType
-        present(viewController, animated:true, completion: nil)
+        let MemeEditorViewController = UIImagePickerController()
+        MemeEditorViewController.delegate = self
+        MemeEditorViewController.sourceType = sourceType
+        present(MemeEditorViewController, animated:true, completion: nil)
     }
     
     //MARK: imagePicker Delegate Metods
@@ -116,7 +116,9 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     
     //MARK: textField delegate Methods
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.text = ""
+        if ["TOP", "BOTTOM"].contains(textField.text!) {
+            textField.text = ""
+        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -127,13 +129,13 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     // MARK: Keyboard Methods
     @objc func keyboardWillShow(_ notification:Notification) {
         if bottopTextField.isFirstResponder {
-            self.view.frame.origin.y -= getKeyboardHeight(notification)
+                view.frame.origin.y = getKeyboardHeight(notification) * (-1)
         }
     }
     
     @objc func keyboardWillHide(_ notification:Notification) {
         if bottopTextField.isFirstResponder {
-            self.view.frame.origin.y += getKeyboardHeight(notification)
+                view.frame.origin.y = 0
         }
     }
     

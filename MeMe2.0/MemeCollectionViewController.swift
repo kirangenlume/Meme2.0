@@ -11,10 +11,17 @@ import UIKit
 private let reuseIdentifier = "Cell"
 
 class MemeCollectionViewController: UICollectionViewController {
-    
+    @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     var memes = [MemeObject]()
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let space:CGFloat = 3.0
+        let dimensions = (view.frame.size.width - (12 * space)) / 3.0
+        
+        flowLayout.minimumInteritemSpacing = space
+        flowLayout.minimumLineSpacing = space
+        flowLayout.itemSize = CGSize(width: dimensions, height: dimensions)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,5 +43,9 @@ class MemeCollectionViewController: UICollectionViewController {
         cell.imageView.image = memes[indexPath.item].memedImage
         return cell
     }
-
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailMemePage: MemeDetailPage = storyboard?.instantiateViewController(withIdentifier: "MeMeDetailImage") as! MemeDetailPage
+        detailMemePage.memes = [memes[(indexPath as NSIndexPath).row]]
+        self.navigationController!.pushViewController(detailMemePage, animated: true)
+    }
 }
